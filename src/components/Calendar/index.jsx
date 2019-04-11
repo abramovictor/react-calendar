@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as calendar from './calendar';
 
 export default class Calendar extends Component {
     static defaultProps = {
@@ -71,11 +72,15 @@ export default class Calendar extends Component {
         this.setState({ date });
     };
 
-    handleSelectChange = () => { };
+    handleSelectChange = () => {
+        const year = this.yearSelect.value;
+        const month = this.monthSelect.value;
 
-    handledayClick = (date) => {
-        console.log(date);
+        const date = new Date(year, month);
+        this.setState({ date });
+    };
 
+    handleDayClick = (date) => {
         this.setState({ selectedDate: date });
         this.props.onChange(date);
     };
@@ -83,13 +88,7 @@ export default class Calendar extends Component {
     render() {
         const { years, monthNames, weekDayNames } = this.props;
 
-        const monthData = [
-            [undefined, undefined, new Date(), new Date(), new Date(), new Date(), new Date()],
-            [new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date()],
-            [new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date()],
-            [new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date()],
-            [new Date(), new Date(), new Date(), new Date(), undefined, undefined, undefined],
-        ];
+        const monthData = calendar.getMonthData(this.year, this.month);
 
         return (
             <div className="calendar card bg-dark shadow">
@@ -98,24 +97,34 @@ export default class Calendar extends Component {
                         <button
                             className="btn btn-light"
                             title={this.props.buttonMonthNames.prev}
-                            onClick={() => this.handlePrevMonthButtonClick()}>
+                            onClick={this.handlePrevMonthButtonClick}>
 
                             {'❮'}</button>
                         <button
                             className="btn btn-light"
                             title={this.props.buttonMonthNames.next}
-                            onClick={() => this.handleNextMonthButtonClick()}>
+                            onClick={this.handleNextMonthButtonClick}>
 
                             {'❯'}</button>
                     </div>
 
                     <div className="input-group">
-                        <select className="form-control btn-light">
+                        <select
+                            defaultValue={this.month}
+                            ref={element => this.monthSelect = element}
+                            onChange={this.handleSelectChange}
+                            className="form-control btn-light">
+                            
                             {monthNames.map((name, index) =>
                                 <option key={name} value={index}>{name}</option>
                             )}
                         </select>
-                        <select className="form-control btn-light">
+                        <select
+                            defaultValue={this.year}
+                            ref={element => this.yearSelect = element}
+                            onChange={this.handleSelectChange}
+                            className="form-control btn-light">
+                            
                             {years.map(year =>
                                 <option key={year} value={year}>{year}</option>
                             )}
@@ -138,7 +147,7 @@ export default class Calendar extends Component {
                                         <td className="p-1" key={index}>
                                             <button
                                                 className="btn btn-dark h-100 w-100"
-                                                onClick={() => this.handledayClick(date)}>
+                                                onClick={() => this.handleDayClick(date)}>
 
                                                 {date.getDate()}</button>
                                         </td> :
