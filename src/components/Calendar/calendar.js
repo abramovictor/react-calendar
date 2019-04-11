@@ -10,6 +10,15 @@ export function getDayOfWeek(date) {
     return dayOfWeek === 0 ? 6 : dayOfWeek - 1;
 }
 
+export function isEqual(a, b) {
+    if (!a || !b) return false;
+
+    return (
+        a.getFullYear() === b.getFullYear() &&
+        a.getMonth() === b.getMonth() &&
+        a.getDate() === b.getDate()
+    );
+}
 
 export function getMonthData(year, month) {
     const result = [];

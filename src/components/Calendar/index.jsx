@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import * as calendar from './calendar';
 
 export default class Calendar extends Component {
@@ -87,7 +88,7 @@ export default class Calendar extends Component {
 
     render() {
         const { years, monthNames, weekDayNames } = this.props;
-
+        const { currentDate, selectedDate } = this.state;
         const monthData = calendar.getMonthData(this.year, this.month);
 
         return (
@@ -110,7 +111,7 @@ export default class Calendar extends Component {
 
                     <div className="input-group">
                         <select
-                            defaultValue={this.month}
+                            value={this.month}
                             ref={element => this.monthSelect = element}
                             onChange={this.handleSelectChange}
                             className="form-control btn-light">
@@ -120,7 +121,7 @@ export default class Calendar extends Component {
                             )}
                         </select>
                         <select
-                            defaultValue={this.year}
+                            value={this.year}
                             ref={element => this.yearSelect = element}
                             onChange={this.handleSelectChange}
                             className="form-control btn-light">
@@ -146,7 +147,13 @@ export default class Calendar extends Component {
                                     {week.map((date, index) => date ?
                                         <td className="p-1" key={index}>
                                             <button
-                                                className="btn btn-dark h-100 w-100"
+                                                className={classnames('btn h-100 w-100', {
+                                                    'text-muted': date.getMonth() !== this.month,
+                                                    'border border-light': calendar.isEqual(date, currentDate),
+
+                                                    'btn-light': calendar.isEqual(date, selectedDate),
+                                                    'btn-dark': !calendar.isEqual(date, selectedDate)
+                                                })}
                                                 onClick={() => this.handleDayClick(date)}>
 
                                                 {date.getDate()}</button>
