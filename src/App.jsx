@@ -9,17 +9,15 @@ class App extends Component {
     handleDateChange = date => this.setState({ date });
 
     render() {
-        const { date } = this.state;
+        let date = this.state.date ? this.state.date : new Date();
 
         return (
             <div className="container">
                 <div className="row justify-content-center pt-5">
                     <div className="col-xl-6 col-lg-8 col-md-10 pt-5">
-                        {date &&
-                            <div className="card bg-dark text-light">
-                                <header className="card-header"><strong>Выбранная дата:</strong> {date.toLocaleDateString()}</header>
-                            </div>
-                        }
+                        <div className="card bg-dark text-light rounded-0">
+                            <header className="card-header border-bottom-0 rounded-0"><strong>Выбранная дата:</strong> {date.toLocaleDateString()}</header>
+                        </div>
                         <Calendar
                             onChange={this.handleDateChange}
                         />

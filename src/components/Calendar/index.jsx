@@ -92,21 +92,23 @@ export default class Calendar extends Component {
         const monthData = calendar.getMonthData(this.year, this.month);
 
         return (
-            <div className="calendar card bg-dark shadow">
-                <header className="card-header d-flex">
+            <div className="calendar card bg-dark shadow rounded-0 border-top-0">
+                <header className="card-header d-flex rounded-0">
                     <div className="btn-group mr-3">
                         <button
                             className="btn btn-light"
                             title={this.props.buttonMonthNames.prev}
                             onClick={this.handlePrevMonthButtonClick}>
-
-                            {'❮'}</button>
+                            
+                            ❮
+                        </button>
                         <button
                             className="btn btn-light"
                             title={this.props.buttonMonthNames.next}
                             onClick={this.handleNextMonthButtonClick}>
 
-                            {'❯'}</button>
+                            ❯
+                        </button>
                     </div>
 
                     <div className="input-group">
@@ -115,7 +117,7 @@ export default class Calendar extends Component {
                             ref={element => this.monthSelect = element}
                             onChange={this.handleSelectChange}
                             className="form-control btn-light">
-                            
+
                             {monthNames.map((name, index) =>
                                 <option key={name} value={index}>{name}</option>
                             )}
@@ -125,7 +127,7 @@ export default class Calendar extends Component {
                             ref={element => this.yearSelect = element}
                             onChange={this.handleSelectChange}
                             className="form-control btn-light">
-                            
+
                             {years.map(year =>
                                 <option key={year} value={year}>{year}</option>
                             )}
@@ -133,11 +135,11 @@ export default class Calendar extends Component {
                     </div>
                 </header>
                 <section className="card-body">
-                    <table className="table table-bordered table-dark text-center">
+                    <table className="table table-borderless text-center m-0">
                         <thead>
                             <tr>
-                                {weekDayNames.map(({ short: name }) =>
-                                    <th key={name}>{name}</th>
+                                {weekDayNames.map(({ short: name, full: title }) =>
+                                    <th key={name} title={title} className="pb-4 text-white">{name}</th>
                                 )}
                             </tr>
                         </thead>
@@ -147,12 +149,12 @@ export default class Calendar extends Component {
                                     {week.map((date, index) => date ?
                                         <td className="p-1" key={index}>
                                             <button
-                                                className={classnames('btn h-100 w-100', {
+                                                className={classnames('btn h-100 w-100 rounded-0', {
                                                     'text-muted': date.getMonth() !== this.month,
-                                                    'border border-light': calendar.isEqual(date, currentDate),
+                                                    'btn-light': calendar.isEqual(date, currentDate),
 
-                                                    'btn-light': calendar.isEqual(date, selectedDate),
-                                                    'btn-dark': !calendar.isEqual(date, selectedDate)
+                                                    'border border-light': calendar.isEqual(date, selectedDate),
+                                                    'border-dark': !calendar.isEqual(date, selectedDate) && !calendar.isEqual(date, currentDate)
                                                 })}
                                                 onClick={() => this.handleDayClick(date)}>
 
